@@ -311,9 +311,9 @@ namespace TicTacToe.Tests.EditMode.Presentation
         {
             // Arrange
             _mediator.Initialize();
-            _mediator.StartNewGame(humanFirst: true);
             var eventRaised = false;
             _mediator.OnGameEnded.Subscribe(_ => eventRaised = true);
+            _mediator.StartNewGame(humanFirst: true);
 
             // Act - Complete a game
             _gameService.PlaceMark(new BoardPosition(0));
@@ -321,6 +321,9 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.PlaceMark(new BoardPosition(1));
             _gameService.PlaceMark(new BoardPosition(4));
             _gameService.PlaceMark(new BoardPosition(2)); // X wins
+
+            // Wait for async operations
+            System.Threading.Thread.Sleep(50);
 
             // Assert
             Assert.IsTrue(eventRaised);
@@ -415,10 +418,11 @@ namespace TicTacToe.Tests.EditMode.Presentation
         {
             // Arrange
             _mediator.Initialize();
-            
+            _mediator.ResultShowDelayMs = 0; // Disable delay for test
+
             // Act - Human first (X: Human, O: AI)
             _mediator.StartNewGame(humanFirst: true);
-            
+
             // Verify initial state
             Assert.IsTrue(_mediator.IsGameStarted.CurrentValue);
             Assert.IsTrue(_turnIndicatorViewModel.IsVisible.CurrentValue);
@@ -428,11 +432,14 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.PlaceMark(new BoardPosition(0)); // X (Human)
             // AI places O automatically
             System.Threading.Thread.Sleep(50);
-            
+
             _gameService.PlaceMark(new BoardPosition(1)); // X (Human)
             System.Threading.Thread.Sleep(50);
-            
+
             _gameService.PlaceMark(new BoardPosition(2)); // X wins (Human)
+
+            // Wait for async result display
+            System.Threading.Thread.Sleep(50);
 
             // Assert end state
             Assert.IsTrue(_gameService.IsGameOver);

@@ -1,3 +1,4 @@
+using System.Collections;
 using R3;
 using TMPro;
 using TicTacToe.Core.Domain;
@@ -24,7 +25,9 @@ namespace TicTacToe.Presentation.TurnIndicator
         [Header("Animation Settings")]
         [SerializeField] private float _fadeDuration = 0.3f;
 
-        private float _targetAlpha = 1f;
+        private Coroutine _textAnimation;
+        private Coroutine _pulseAnimation;
+        private Coroutine _fadeAnimation;
 
         protected override void OnBind(TurnIndicatorViewModel viewModel)
         {
@@ -57,7 +60,32 @@ namespace TicTacToe.Presentation.TurnIndicator
             if (_turnText != null)
             {
                 _turnText.text = text;
+                
+                // ターン交代時のアニメーション
+                StopAnimation(ref _textAnimation);
+                _textAnimation = StartCoroutine(TurnChangeAnimation());
             }
+        }
+
+        private IEnumerator TurnChangeAnimation()
+        {
+            _turnText.transform.localPosition = new Vector3(0, -10f, 0);
+            
+            float elapsed = 0f;
+            float duration = 0.4f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                // OutBack easing
+                float c1 = 1.70158f;
+                float c3 = c1 + 1f;
+                t = 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
+                
+                _turnText.transform.localPosition = new Vector3(0, Mathf.LerpUnclamped(-10f, 0f, t), 0);
+                yield return null;
+            }
+            _turnText.transform.localPosition = Vector3.zero;
         }
 
         /// <summary>
@@ -67,12 +95,28 @@ namespace TicTacToe.Presentation.TurnIndicator
         {
             if (_turnText == null) return;
 
-            _turnText.color = mark switch
+            Color targetColor = mark switch
             {
                 CellState.X => _xColor,
                 CellState.O => _oColor,
                 _ => Color.white
             };
+            
+            StartCoroutine(ColorAnimation(_turnText, targetColor, _fadeDuration));
+        }
+
+        private IEnumerator ColorAnimation(TextMeshProUGUI text, Color targetColor, float duration)
+        {
+            Color startColor = text.color;
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                text.color = Color.Lerp(startColor, targetColor, t);
+                yield return null;
+            }
+            text.color = targetColor;
         }
 
         /// <summary>
@@ -84,13 +128,44 @@ namespace TicTacToe.Presentation.TurnIndicator
 
             if (isThinking)
             {
-                _turnText.color = _aiThinkingColor;
+                StartCoroutine(ColorAnimation(_turnText, _aiThinkingColor, _fadeDuration));
+                // 思考中のパルスアニメーション
+                StopAnimation(ref _pulseAnimation);
+                _pulseAnimation = StartCoroutine(PulseAnimation());
             }
             else
             {
+                StopAnimation(ref _pulseAnimation);
+                _turnText.transform.localScale = Vector3.one;
                 // 現在のマークに基づいて色を復元
                 UpdateTextColor(ViewModel.CurrentMark.CurrentValue);
             }
+        }
+
+        private IEnumerator PulseAnimation()
+        {
+            while (true)
+            {
+                // 拡大
+                yield return ScaleAnimation(_turnText.transform, Vector3.one, Vector3.one * 1.05f, 0.5f);
+                // 縮小
+                yield return ScaleAnimation(_turnText.transform, Vector3.one * 1.05f, Vector3.one, 0.5f);
+            }
+        }
+
+        private IEnumerator ScaleAnimation(Transform target, Vector3 from, Vector3 to, float duration)
+        {
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                // EaseInOutSine
+                t = -(Mathf.Cos(Mathf.PI * t) - 1f) / 2f;
+                target.localScale = Vector3.Lerp(from, to, t);
+                yield return null;
+            }
+            target.localScale = to;
         }
 
         /// <summary>
@@ -98,14 +173,35 @@ namespace TicTacToe.Presentation.TurnIndicator
         /// </summary>
         private void SetVisible(bool visible)
         {
-            _targetAlpha = visible ? 1f : 0f;
-
             if (_canvasGroup != null)
             {
-                // アニメーションなしで即座に変更（シンプル実装）
-                _canvasGroup.alpha = _targetAlpha;
+                StopAnimation(ref _fadeAnimation);
+                _fadeAnimation = StartCoroutine(FadeAnimation(visible ? 1f : 0f));
                 _canvasGroup.interactable = visible;
                 _canvasGroup.blocksRaycasts = visible;
+            }
+        }
+
+        private IEnumerator FadeAnimation(float targetAlpha)
+        {
+            float startAlpha = _canvasGroup.alpha;
+            float elapsed = 0f;
+            while (elapsed < _fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / _fadeDuration);
+                _canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, t);
+                yield return null;
+            }
+            _canvasGroup.alpha = targetAlpha;
+        }
+
+        private void StopAnimation(ref Coroutine coroutine)
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
             }
         }
 

@@ -46,6 +46,11 @@ namespace TicTacToe.Presentation.Mediators
         public int AIThinkingDelayMs { get; set; } = 500;
 
         /// <summary>
+        /// リザルト表示までのディレイ（ミリ秒）
+        /// </summary>
+        public int ResultShowDelayMs { get; set; } = 1200;
+
+        /// <summary>
         /// GameMediatorを作成
         /// </summary>
         /// <param name="gameService">ゲームサービス</param>
@@ -100,6 +105,11 @@ namespace TicTacToe.Presentation.Mediators
             // ゲーム結果を購読
             _gameService.CurrentGameResult
                 .Subscribe(result => HandleGameResult(result))
+                .AddTo(Disposables);
+
+            // リザルト表示リクエストを購読（ディレイ付きで表示）
+            _resultViewModel.OnShowResult
+                .Subscribe(resultType => ShowResultWithDelay(resultType))
                 .AddTo(Disposables);
         }
 
@@ -168,6 +178,33 @@ namespace TicTacToe.Presentation.Mediators
             if (result.IsGameOver)
             {
                 _onGameEnded.OnNext(Unit.Default);
+            }
+        }
+
+        /// <summary>
+        /// ディレイ後にリザルトを表示
+        /// </summary>
+        private async void ShowResultWithDelay(ResultType resultType)
+        {
+            if (IsDisposed) return;
+
+            try
+            {
+                // 盤面の結果を確認できるようにディレイ
+                if (ResultShowDelayMs > 0)
+                {
+                    await System.Threading.Tasks.Task.Delay(ResultShowDelayMs);
+                }
+
+                // Dispose後のチェック
+                if (IsDisposed) return;
+
+                // リザルトを表示
+                _resultViewModel.SetVisible(true);
+            }
+            catch (Exception)
+            {
+                // Disposeされた場合の例外を無視
             }
         }
 

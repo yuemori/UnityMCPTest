@@ -7,6 +7,17 @@ using TicTacToe.Presentation.Base;
 namespace TicTacToe.Presentation.Result
 {
     /// <summary>
+    /// 結果タイプ（演出の種類を決定）
+    /// </summary>
+    public enum ResultType
+    {
+        None,
+        HumanWin,    // 人間の勝利
+        AIWin,       // AIの勝利（人間の敗北）
+        Draw         // 引き分け
+    }
+
+    /// <summary>
     /// ゲーム結果表示のViewModel
     /// 勝敗結果をUIに提供
     /// </summary>
@@ -18,7 +29,9 @@ namespace TicTacToe.Presentation.Result
         private readonly ReactiveProperty<bool> _isVisible;
         private readonly ReactiveProperty<bool> _isWin;
         private readonly ReactiveProperty<bool> _isDraw;
+        private readonly ReactiveProperty<ResultType> _resultType;
         private readonly Subject<Unit> _onRestartRequested;
+        private readonly Subject<ResultType> _onShowResult;
 
         /// <summary>
         /// 表示する結果テキスト（例: "Xの勝ち!", "Oの勝ち!", "引き分け"）
@@ -46,9 +59,19 @@ namespace TicTacToe.Presentation.Result
         public ReadOnlyReactiveProperty<bool> IsDraw => _isDraw;
 
         /// <summary>
+        /// 結果タイプ（演出切り替え用）
+        /// </summary>
+        public ReadOnlyReactiveProperty<ResultType> CurrentResultType => _resultType;
+
+        /// <summary>
         /// リスタートがリクエストされたときに発火するObservable
         /// </summary>
         public Observable<Unit> OnRestartRequested => _onRestartRequested;
+
+        /// <summary>
+        /// 結果を表示するときに発火するObservable（ディレイ後に発火）
+        /// </summary>
+        public Observable<ResultType> OnShowResult => _onShowResult;
 
         /// <summary>
         /// ResultViewModelを作成
@@ -62,38 +85,33 @@ namespace TicTacToe.Presentation.Result
             _isVisible = new ReactiveProperty<bool>(false);
             _isWin = new ReactiveProperty<bool>(false);
             _isDraw = new ReactiveProperty<bool>(false);
+            _resultType = new ReactiveProperty<ResultType>(ResultType.None);
             _onRestartRequested = new Subject<Unit>();
+            _onShowResult = new Subject<ResultType>();
         }
 
         protected override void OnInitialize()
         {
-            // ゲーム結果の変更を購読
+            // ゲーム結果の変更を購読（即座には表示しない、データのみ準備）
             _gameService.CurrentGameResult
-                .Subscribe(result => UpdateResultDisplay(result))
+                .Subscribe(result => PrepareResultData(result))
                 .AddTo(Disposables);
         }
 
         /// <summary>
-        /// 結果表示を更新
+        /// 結果データを準備（まだ表示しない）
         /// </summary>
-        private void UpdateResultDisplay(GameResult result)
+        private void PrepareResultData(GameResult result)
         {
             ThrowIfDisposed();
 
             if (!result.IsGameOver)
             {
-                // ゲーム進行中は非表示
-                _isVisible.Value = false;
-                _resultText.Value = "";
-                _winnerMark.Value = CellState.Empty;
-                _isWin.Value = false;
-                _isDraw.Value = false;
+                // ゲーム進行中はデータリセット（表示はそのまま）
                 return;
             }
 
-            // ゲーム終了時は表示
-            _isVisible.Value = true;
-
+            // 結果データを設定
             switch (result.State)
             {
                 case GameState.Win:
@@ -103,6 +121,16 @@ namespace TicTacToe.Presentation.Result
                     _resultText.Value = result.Winner == CellState.X 
                         ? "X Wins!" 
                         : "O Wins!";
+                    
+                    // 勝者が人間かAIかを判定
+                    var turn = _gameService.CurrentTurn.CurrentValue;
+                    var winnerMark = result.Winner ?? CellState.Empty;
+                    var winnerPlayerType = winnerMark == CellState.X 
+                        ? turn.XPlayerType 
+                        : turn.OPlayerType;
+                    _resultType.Value = winnerPlayerType == PlayerType.Human 
+                        ? ResultType.HumanWin 
+                        : ResultType.AIWin;
                     break;
 
                 case GameState.Draw:
@@ -110,6 +138,7 @@ namespace TicTacToe.Presentation.Result
                     _isDraw.Value = true;
                     _winnerMark.Value = CellState.Empty;
                     _resultText.Value = "Draw";
+                    _resultType.Value = ResultType.Draw;
                     break;
 
                 default:
@@ -117,7 +146,14 @@ namespace TicTacToe.Presentation.Result
                     _isDraw.Value = false;
                     _winnerMark.Value = CellState.Empty;
                     _resultText.Value = "";
+                    _resultType.Value = ResultType.None;
                     break;
+            }
+
+            // 結果表示をリクエスト（Mediatorがディレイ後に表示を制御）
+            if (result.IsGameOver)
+            {
+                _onShowResult.OnNext(_resultType.Value);
             }
         }
 
@@ -160,7 +196,9 @@ namespace TicTacToe.Presentation.Result
             _isVisible.Dispose();
             _isWin.Dispose();
             _isDraw.Dispose();
+            _resultType.Dispose();
             _onRestartRequested.Dispose();
+            _onShowResult.Dispose();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace TicTacToe.Presentation.Cell
         private readonly BoardPosition _position;
         private readonly ReactiveProperty<CellState> _cellState;
         private readonly ReactiveProperty<bool> _isClickable;
+        private readonly ReactiveProperty<bool> _isHighlighted;
         private readonly Subject<BoardPosition> _onCellClicked;
 
         /// <summary>
@@ -32,6 +33,11 @@ namespace TicTacToe.Presentation.Cell
         public ReadOnlyReactiveProperty<bool> IsClickable => _isClickable;
 
         /// <summary>
+        /// セルがハイライトされているかどうか（勝利ラインなど）
+        /// </summary>
+        public ReadOnlyReactiveProperty<bool> IsHighlighted => _isHighlighted;
+
+        /// <summary>
         /// セルがクリックされたときに発火するObservable
         /// BoardViewModelでsubscribeして処理を行う
         /// </summary>
@@ -46,6 +52,7 @@ namespace TicTacToe.Presentation.Cell
             _position = position;
             _cellState = new ReactiveProperty<CellState>(Core.Domain.CellState.Empty);
             _isClickable = new ReactiveProperty<bool>(true);
+            _isHighlighted = new ReactiveProperty<bool>(false);
             _onCellClicked = new Subject<BoardPosition>();
         }
 
@@ -57,6 +64,16 @@ namespace TicTacToe.Presentation.Cell
         {
             ThrowIfDisposed();
             _cellState.Value = state;
+        }
+
+        /// <summary>
+        /// ハイライト状態を更新
+        /// </summary>
+        /// <param name="highlighted">ハイライトするかどうか</param>
+        public void SetHighlight(bool highlighted)
+        {
+            ThrowIfDisposed();
+            _isHighlighted.Value = highlighted;
         }
 
         /// <summary>
@@ -92,12 +109,14 @@ namespace TicTacToe.Presentation.Cell
             ThrowIfDisposed();
             _cellState.Value = Core.Domain.CellState.Empty;
             _isClickable.Value = true;
+            _isHighlighted.Value = false;
         }
 
         protected override void OnDispose()
         {
             _cellState.Dispose();
             _isClickable.Dispose();
+            _isHighlighted.Dispose();
             _onCellClicked.Dispose();
         }
     }

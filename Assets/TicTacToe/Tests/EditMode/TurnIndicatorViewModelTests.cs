@@ -93,7 +93,7 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.StartNewGame(PlayerType.Human, PlayerType.AI);
 
             // Assert
-            Assert.AreEqual("Xのターン", _viewModel.TurnText.CurrentValue);
+            Assert.AreEqual("X's Turn", _viewModel.TurnText.CurrentValue);
             Assert.AreEqual(CellState.X, _viewModel.CurrentMark.CurrentValue);
         }
 
@@ -107,7 +107,7 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.StartNewGame(PlayerType.AI, PlayerType.Human);
 
             // Assert
-            Assert.AreEqual("AIの思考中...", _viewModel.TurnText.CurrentValue);
+            Assert.AreEqual("AI Thinking...", _viewModel.TurnText.CurrentValue);
             Assert.IsTrue(_viewModel.IsAIThinking.CurrentValue);
         }
 
@@ -126,7 +126,7 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.PlaceMark(new BoardPosition(0));
 
             // Assert
-            Assert.AreEqual("Oのターン", _viewModel.TurnText.CurrentValue);
+            Assert.AreEqual("O's Turn", _viewModel.TurnText.CurrentValue);
             Assert.AreEqual(CellState.O, _viewModel.CurrentMark.CurrentValue);
         }
 
@@ -141,7 +141,7 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.PlaceMark(new BoardPosition(0));
 
             // Assert
-            Assert.AreEqual("AIの思考中...", _viewModel.TurnText.CurrentValue);
+            Assert.AreEqual("AI Thinking...", _viewModel.TurnText.CurrentValue);
             Assert.IsTrue(_viewModel.IsAIThinking.CurrentValue);
         }
 
@@ -214,7 +214,7 @@ namespace TicTacToe.Tests.EditMode.Presentation
 
             // Assert
             Assert.IsTrue(_viewModel.IsAIThinking.CurrentValue);
-            Assert.AreEqual("AIの思考中...", _viewModel.TurnText.CurrentValue);
+            Assert.AreEqual("AI Thinking...", _viewModel.TurnText.CurrentValue);
         }
 
         [Test]

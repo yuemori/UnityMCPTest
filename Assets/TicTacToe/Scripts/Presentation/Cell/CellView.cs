@@ -1,3 +1,4 @@
+using System.Collections;
 using R3;
 using TMPro;
 using TicTacToe.Core.Domain;
@@ -24,6 +25,12 @@ namespace TicTacToe.Presentation.Cell
         [SerializeField] private Color _oColor = new Color(1f, 0.4f, 0.4f);
         [SerializeField] private Color _disabledColor = new Color(0.7f, 0.7f, 0.7f);
 
+        [Header("Animation Settings")]
+        [SerializeField] private float _popDuration = 0.3f;
+        [SerializeField] private float _highlightScale = 1.2f;
+
+        private Coroutine _currentAnimation;
+
         protected override void OnBind(CellViewModel viewModel)
         {
             // セル状態の変更を購読してUIを更新
@@ -40,6 +47,38 @@ namespace TicTacToe.Presentation.Cell
             _button.OnClickAsObservable()
                 .Subscribe(_ => viewModel.OnClick())
                 .AddTo(Disposables);
+
+            // ハイライト状態を購読
+            viewModel.IsHighlighted
+                .Subscribe(highlighted => UpdateHighlight(highlighted))
+                .AddTo(Disposables);
+        }
+
+        private void UpdateHighlight(bool highlighted)
+        {
+            StopCurrentAnimation();
+            
+            if (highlighted)
+            {
+                // 勝利ラインの強調アニメーション（ループ）
+                _currentAnimation = StartCoroutine(HighlightPulseAnimation());
+            }
+            else
+            {
+                // 通常状態に戻す
+                _markText.transform.localScale = Vector3.one;
+            }
+        }
+
+        private IEnumerator HighlightPulseAnimation()
+        {
+            while (true)
+            {
+                // 拡大
+                yield return ScaleAnimation(_markText.transform, Vector3.one, Vector3.one * _highlightScale, 0.4f);
+                // 縮小
+                yield return ScaleAnimation(_markText.transform, Vector3.one * _highlightScale, Vector3.one, 0.4f);
+            }
         }
 
         /// <summary>
@@ -51,6 +90,7 @@ namespace TicTacToe.Presentation.Cell
             {
                 case CellState.Empty:
                     _markText.text = "";
+                    _markText.transform.localScale = Vector3.one;
                     if (_backgroundImage != null)
                     {
                         _backgroundImage.color = _emptyColor;
@@ -64,6 +104,7 @@ namespace TicTacToe.Presentation.Cell
                     {
                         _backgroundImage.color = Color.white;
                     }
+                    AnimateMark();
                     break;
 
                 case CellState.O:
@@ -73,7 +114,64 @@ namespace TicTacToe.Presentation.Cell
                     {
                         _backgroundImage.color = Color.white;
                     }
+                    AnimateMark();
                     break;
+            }
+        }
+
+        private void AnimateMark()
+        {
+            if (_markText == null) return;
+
+            StopCurrentAnimation();
+            _currentAnimation = StartCoroutine(PopAnimation());
+        }
+
+        private IEnumerator PopAnimation()
+        {
+            // OutBack 風のポップアップアニメーション
+            _markText.transform.localScale = Vector3.zero;
+            yield return ScaleAnimationWithOvershoot(_markText.transform, Vector3.zero, Vector3.one, _popDuration);
+        }
+
+        private IEnumerator ScaleAnimation(Transform target, Vector3 from, Vector3 to, float duration)
+        {
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                // EaseInOutSine
+                t = -(Mathf.Cos(Mathf.PI * t) - 1f) / 2f;
+                target.localScale = Vector3.Lerp(from, to, t);
+                yield return null;
+            }
+            target.localScale = to;
+        }
+
+        private IEnumerator ScaleAnimationWithOvershoot(Transform target, Vector3 from, Vector3 to, float duration)
+        {
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / duration);
+                // OutBack easing (overshoot)
+                float c1 = 1.70158f;
+                float c3 = c1 + 1f;
+                t = 1f + c3 * Mathf.Pow(t - 1f, 3f) + c1 * Mathf.Pow(t - 1f, 2f);
+                target.localScale = Vector3.LerpUnclamped(from, to, t);
+                yield return null;
+            }
+            target.localScale = to;
+        }
+
+        private void StopCurrentAnimation()
+        {
+            if (_currentAnimation != null)
+            {
+                StopCoroutine(_currentAnimation);
+                _currentAnimation = null;
             }
         }
 

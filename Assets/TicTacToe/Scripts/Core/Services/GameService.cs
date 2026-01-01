@@ -78,8 +78,10 @@ namespace TicTacToe.Core.Services
             ThrowIfDisposed();
             
             _boardRepository.Reset();
-            _currentTurn.Value = TurnInfo.CreateInitial(xPlayerType, oPlayerType);
+            // GameResultを先に更新してからCurrentTurnを更新する
+            // （CurrentTurn更新時のサブスクライバでIsGameOverを参照するため）
             _gameResult.Value = GameResult.InProgress();
+            _currentTurn.Value = TurnInfo.CreateInitial(xPlayerType, oPlayerType);
         }
         
         /// <summary>

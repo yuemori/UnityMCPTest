@@ -115,6 +115,8 @@ namespace TicTacToe.Tests.EditMode.Presentation
             // Arrange
             _viewModel.Initialize();
             _gameService.StartNewGame(PlayerType.Human, PlayerType.Human);
+            var showResultRaised = false;
+            _viewModel.OnShowResult.Subscribe(_ => showResultRaised = true);
 
             // Act - X wins with top row
             _gameService.PlaceMark(new BoardPosition(0)); // X
@@ -123,9 +125,9 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.PlaceMark(new BoardPosition(4)); // O
             _gameService.PlaceMark(new BoardPosition(2)); // X wins
 
-            // Assert
-            Assert.IsTrue(_viewModel.IsVisible.CurrentValue);
-            Assert.AreEqual("Xの勝ち!", _viewModel.ResultText.CurrentValue);
+            // Assert - Data is set correctly, visibility is controlled by Mediator
+            Assert.IsTrue(showResultRaised); // OnShowResult event is raised
+            Assert.AreEqual("X Wins!", _viewModel.ResultText.CurrentValue);
             Assert.AreEqual(CellState.X, _viewModel.WinnerMark.CurrentValue);
             Assert.IsTrue(_viewModel.IsWin.CurrentValue);
             Assert.IsFalse(_viewModel.IsDraw.CurrentValue);
@@ -137,6 +139,8 @@ namespace TicTacToe.Tests.EditMode.Presentation
             // Arrange
             _viewModel.Initialize();
             _gameService.StartNewGame(PlayerType.Human, PlayerType.Human);
+            var showResultRaised = false;
+            _viewModel.OnShowResult.Subscribe(_ => showResultRaised = true);
 
             // Act - O wins with left column
             _gameService.PlaceMark(new BoardPosition(1)); // X
@@ -146,9 +150,9 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.PlaceMark(new BoardPosition(4)); // X
             _gameService.PlaceMark(new BoardPosition(6)); // O wins
 
-            // Assert
-            Assert.IsTrue(_viewModel.IsVisible.CurrentValue);
-            Assert.AreEqual("Oの勝ち!", _viewModel.ResultText.CurrentValue);
+            // Assert - Data is set correctly, visibility is controlled by Mediator
+            Assert.IsTrue(showResultRaised); // OnShowResult event is raised
+            Assert.AreEqual("O Wins!", _viewModel.ResultText.CurrentValue);
             Assert.AreEqual(CellState.O, _viewModel.WinnerMark.CurrentValue);
             Assert.IsTrue(_viewModel.IsWin.CurrentValue);
             Assert.IsFalse(_viewModel.IsDraw.CurrentValue);
@@ -164,6 +168,8 @@ namespace TicTacToe.Tests.EditMode.Presentation
             // Arrange
             _viewModel.Initialize();
             _gameService.StartNewGame(PlayerType.Human, PlayerType.Human);
+            var showResultRaised = false;
+            _viewModel.OnShowResult.Subscribe(_ => showResultRaised = true);
 
             // Act - Create a draw:
             // X O X
@@ -179,9 +185,9 @@ namespace TicTacToe.Tests.EditMode.Presentation
             _gameService.PlaceMark(new BoardPosition(8)); // O
             _gameService.PlaceMark(new BoardPosition(7)); // X - Draw
 
-            // Assert
-            Assert.IsTrue(_viewModel.IsVisible.CurrentValue);
-            Assert.AreEqual("引き分け", _viewModel.ResultText.CurrentValue);
+            // Assert - Data is set correctly, visibility is controlled by Mediator
+            Assert.IsTrue(showResultRaised); // OnShowResult event is raised
+            Assert.AreEqual("Draw", _viewModel.ResultText.CurrentValue);
             Assert.AreEqual(CellState.Empty, _viewModel.WinnerMark.CurrentValue);
             Assert.IsFalse(_viewModel.IsWin.CurrentValue);
             Assert.IsTrue(_viewModel.IsDraw.CurrentValue);

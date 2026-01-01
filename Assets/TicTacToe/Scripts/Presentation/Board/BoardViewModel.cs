@@ -119,6 +119,36 @@ namespace TicTacToe.Presentation.Board
                 {
                     cell.SetClickable(false);
                 }
+
+                // 勝利時はラインをハイライト
+                if (result.State == GameState.Win && result.WinningLine.HasValue)
+                {
+                    HighlightWinningLine(result.WinningLine.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 勝利ラインをハイライト
+        /// </summary>
+        private void HighlightWinningLine(WinLine line)
+        {
+            int[] indices = line switch
+            {
+                WinLine.Row0 => new[] { 0, 1, 2 },
+                WinLine.Row1 => new[] { 3, 4, 5 },
+                WinLine.Row2 => new[] { 6, 7, 8 },
+                WinLine.Column0 => new[] { 0, 3, 6 },
+                WinLine.Column1 => new[] { 1, 4, 7 },
+                WinLine.Column2 => new[] { 2, 5, 8 },
+                WinLine.DiagonalMain => new[] { 0, 4, 8 },
+                WinLine.DiagonalAnti => new[] { 2, 4, 6 },
+                _ => Array.Empty<int>()
+            };
+
+            foreach (var index in indices)
+            {
+                _cells[index].SetHighlight(true);
             }
         }
 

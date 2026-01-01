@@ -34,8 +34,10 @@ namespace TicTacToe.Editor
             PlayerSettings.productName = "TicTacToe";
             
             // WebGL 固有設定
-            PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Gzip;
-            PlayerSettings.WebGL.decompressionFallback = true; // GitHub Pages 対応
+            // GitHub Pages は Content-Encoding ヘッダーを適切に設定しないため
+            // 圧縮なし (Disabled) を使用して確実に動作させる
+            PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Disabled;
+            PlayerSettings.WebGL.decompressionFallback = false;
             PlayerSettings.WebGL.dataCaching = true;
             PlayerSettings.WebGL.memorySize = 256;
             PlayerSettings.WebGL.exceptionSupport = WebGLExceptionSupport.None;
@@ -50,7 +52,7 @@ namespace TicTacToe.Editor
             PlayerSettings.colorSpace = ColorSpace.Linear;
             
             Debug.Log("[WebGL] Player Settings configured for WebGL deployment");
-            Debug.Log("  - Compression: Gzip with Decompression Fallback");
+            Debug.Log("  - Compression: Disabled (for GitHub Pages compatibility)");
             Debug.Log("  - Memory: 256MB");
             Debug.Log("  - Resolution: 960x600");
         }

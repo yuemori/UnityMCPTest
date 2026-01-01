@@ -19,7 +19,7 @@ namespace TicTacToe.Presentation.TurnIndicator
         private readonly ReactiveProperty<bool> _isVisible;
 
         /// <summary>
-        /// 表示するターンテキスト（例: "Xのターン", "Oのターン", "AIの思考中..."）
+        /// 表示するターンテキスト（例: "X's Turn", "O's Turn", "AI Thinking..."）
         /// </summary>
         public ReadOnlyReactiveProperty<string> TurnText => _turnText;
 
@@ -84,14 +84,14 @@ namespace TicTacToe.Presentation.TurnIndicator
 
             if (turn.CurrentPlayerType == PlayerType.AI)
             {
-                _turnText.Value = "AIの思考中...";
+                _turnText.Value = "AI Thinking...";
                 _isAIThinking.Value = true;
             }
             else
             {
                 _turnText.Value = turn.CurrentMark == CellState.X 
-                    ? "Xのターン" 
-                    : "Oのターン";
+                    ? "X's Turn" 
+                    : "O's Turn";
                 _isAIThinking.Value = false;
             }
         }
@@ -123,7 +123,7 @@ namespace TicTacToe.Presentation.TurnIndicator
 
             if (isThinking)
             {
-                _turnText.Value = "AIの思考中...";
+                _turnText.Value = "AI Thinking...";
             }
             else
             {
@@ -131,8 +131,8 @@ namespace TicTacToe.Presentation.TurnIndicator
                 if (turn.CurrentMark != CellState.Empty)
                 {
                     _turnText.Value = turn.CurrentMark == CellState.X 
-                        ? "Xのターン" 
-                        : "Oのターン";
+                        ? "X's Turn" 
+                        : "O's Turn";
                 }
             }
         }

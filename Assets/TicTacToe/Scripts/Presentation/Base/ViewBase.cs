@@ -56,29 +56,63 @@ namespace TicTacToe.Presentation.Base
 
         /// <summary>
         /// VContainerによるDI注入ポイント
+        /// Start()後に呼ばれた場合は自動的にバインディングを実行
         /// </summary>
         [Inject]
         public void Construct(TViewModel viewModel)
         {
             _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
+            
+            // Start()が既に呼ばれていて、まだバインドされていない場合はバインドを実行
+            if (_startCalled && !IsBound)
+            {
+                PerformBinding();
+            }
         }
 
         /// <summary>
-        /// ViewModelを手動で設定（テスト用）
+        /// ViewModelを手動で設定（親Viewからの手動バインド用）
+        /// Start()後に呼ばれた場合は自動的にバインディングを実行
         /// </summary>
         public void SetViewModel(TViewModel viewModel)
         {
             _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
+            
+            // Start()が既に呼ばれていて、まだバインドされていない場合はバインドを実行
+            if (_startCalled && !IsBound)
+            {
+                PerformBinding();
+            }
         }
+
+        private bool _startCalled;
 
         protected virtual void Start()
         {
+            _startCalled = true;
+            
+            // ViewModelがまだ設定されていない場合は、後でSetViewModelから設定される想定
+            // （CellViewのように親Viewから手動でバインドされるケース）
             if (_viewModel == null)
             {
-                Debug.LogError($"[{GetType().Name}] ViewModel is not injected. Ensure VContainer is configured correctly.");
+                // VContainer経由で注入されるべきViewの場合のみ警告
+                // ただし、親から手動でバインドされるViewもあるので、ここではログ出力しない
                 return;
             }
 
+            PerformBinding();
+        }
+        
+        /// <summary>
+        /// 実際のバインディング処理
+        /// </summary>
+        private void PerformBinding()
+        {
+            if (IsBound || _viewModel == null)
+            {
+                return;
+            }
+            
             // ViewModelが未初期化の場合は初期化
             if (!_viewModel.IsInitialized)
             {

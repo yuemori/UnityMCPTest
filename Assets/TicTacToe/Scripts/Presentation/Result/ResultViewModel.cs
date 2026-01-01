@@ -101,15 +101,15 @@ namespace TicTacToe.Presentation.Result
                     _isDraw.Value = false;
                     _winnerMark.Value = result.Winner ?? CellState.Empty;
                     _resultText.Value = result.Winner == CellState.X 
-                        ? "Xの勝ち!" 
-                        : "Oの勝ち!";
+                        ? "X Wins!" 
+                        : "O Wins!";
                     break;
 
                 case GameState.Draw:
                     _isWin.Value = false;
                     _isDraw.Value = true;
                     _winnerMark.Value = CellState.Empty;
-                    _resultText.Value = "引き分け";
+                    _resultText.Value = "Draw";
                     break;
 
                 default:

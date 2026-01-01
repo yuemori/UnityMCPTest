@@ -4,40 +4,34 @@
 2026-01-01
 
 ## Current Phase
-**Phase 0: Environment Setup** - ✅ Completed
+**Phase 1: Core/Domain** - ✅ Completed
 
 ## Progress Summary
-- [x] 設計方針決定（MVVM + Clean Architecture）
-- [x] ディレクトリ構造設計
-- [x] AI Skill作成（tictactoe/）
-- [x] Serena Memory初期化
-- [x] VContainer導入 (jp.hadashikick.vcontainer)
-- [x] R3導入 (com.cysharp.r3 + NuGet R3)
-- [x] NuGetForUnity導入
-- [x] R3 NuGet依存パッケージ導入
-  - R3 1.2.9
-  - System.Threading.Channels 8.0.0
-  - Microsoft.Bcl.TimeProvider 8.0.1
-  - Microsoft.Bcl.AsyncInterfaces 8.0.0
-- [x] ディレクトリ構造作成 (Assets/TicTacToe/)
-- [x] Assembly Definition Files作成
-- [x] TicTacToeScene.unity作成
-- [ ] Phase 1 Core/Domain 実装開始
+- [x] Phase 0: 環境構築 ✅
+- [x] Phase 1: Core/Domain ✅
+  - [x] CellState.cs（セル状態 enum）
+  - [x] PlayerType.cs（プレイヤー種別 enum）
+  - [x] BoardPosition.cs（盤面位置 struct）
+  - [x] GameResult.cs（ゲーム結果 + WinLine enum）
+  - [x] TurnInfo.cs（ターン情報 struct）
+  - [x] 単体テスト 57件 全合格
+- [ ] Phase 2: Core/Repository & Service
 
 ## Next Actions
-1. CellState.cs 作成（Core/Domain）
-2. PlayerType.cs 作成（Core/Domain）
-3. BoardPosition.cs 作成（Core/Domain）
-4. GameResult.cs 作成（Core/Domain）
-5. TurnInfo.cs 作成（Core/Domain）
-6. 単体テスト作成
+1. BoardRepository.cs 作成（盤面データ管理）
+2. GameService.cs 作成（勝敗判定ロジック）
+3. Phase 2 単体テスト作成
 
 ## Blockers
 なし
 
-## Recent Decisions
-- Coordinator → Mediator に命名変更（MVPとの混同回避）
-- View/ViewModel はコロケーション（機能単位で同一ディレクトリ）
-- UseCase層は省略（Service内に統合）
-- AI実装は IAIStrategy + RandomAIStrategy（拡張可能）
-- R3はNuGetForUnity経由でインストール（R3.UnityはUPM Git）
+## Test Results
+- EditMode Tests: 57/57 passed
+- BoardPositionTests: 34 tests
+- GameResultTests: 11 tests
+- TurnInfoTests: 12 tests
+
+## Recent Changes
+- Domain モデル実装完了（CellState, PlayerType, BoardPosition, GameResult, TurnInfo, WinLine）
+- 包括的な単体テスト追加
+- すべてのドメインモデルは immutable struct/enum パターンを使用

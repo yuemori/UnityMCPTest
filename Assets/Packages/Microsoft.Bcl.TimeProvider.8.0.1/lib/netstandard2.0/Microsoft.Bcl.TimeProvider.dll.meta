@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 071d6a7c643143f4aa3b94836916b63b
 labels:
-- NuGetForUnity
+  - NuGetForUnity
 PluginImporter:
   externalObjects: {}
   serializedVersion: 3
@@ -24,6 +24,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  userData:
+  assetBundleName:
+  assetBundleVariant:

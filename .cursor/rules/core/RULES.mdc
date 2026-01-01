@@ -84,7 +84,7 @@ Actionable rules for enhanced Agent framework operation.
 
 **Priority**: 🟢 **Triggers**: Creating files, structuring projects, naming decisions
 
-- **Naming Convention Consistency**: Follow language/framework standards (PascalCase for C# public members, _camelCase for private fields)
+- **Naming Convention Consistency**: Follow language/framework standards (PascalCase for C# public members, \_camelCase for private fields)
 - **Descriptive Names**: Files, functions, variables must clearly describe their purpose
 - **Logical Directory Structure**: Organize by feature/domain, not file type
 - **Pattern Following**: Match existing project organization and naming schemes

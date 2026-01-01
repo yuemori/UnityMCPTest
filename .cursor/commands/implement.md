@@ -4,7 +4,15 @@ description: "Feature and code implementation with intelligent persona activatio
 category: workflow
 complexity: standard
 mcp-servers: [context7, sequential]
-personas: [unity-expert, csharp-expert, unity-ui-expert, system-architect, security-engineer, quality-engineer]
+personas:
+  [
+    unity-expert,
+    csharp-expert,
+    unity-ui-expert,
+    system-architect,
+    security-engineer,
+    quality-engineer,
+  ]
 ---
 
 # /implement - Feature Implementation

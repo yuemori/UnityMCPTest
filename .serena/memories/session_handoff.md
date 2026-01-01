@@ -4,38 +4,47 @@
 2026-01-01
 
 ## Session Summary
-- Phase 5 (Board & Cell UI) 実装完了
-- CellViewModel + CellView + BoardViewModel + BoardView + 単体テスト50件追加
-- 全200テスト合格
+- Phase 6 (Game Flow UI) 実装完了
+- TurnIndicatorViewModel + TurnIndicatorView + ResultViewModel + ResultView + GameMediator + 単体テスト76件追加
+- 全276テスト合格
 
 ## Completed in This Session
-1. ✅ CellViewModel.cs 作成
-   - セル状態管理（Empty, X, O）
-   - クリックイベント管理（OnCellClicked Observable）
-   - IsClickable状態管理
-   - Reset機能
-2. ✅ CellView.cs 作成
-   - Button + TextMeshPro UI
-   - 色分け表示（X: 青, O: 赤）
+1. ✅ TurnIndicatorViewModel.cs 作成
+   - ターンテキスト管理（「Xのターン」「Oのターン」「AIの思考中...」）
+   - AI思考状態管理
+   - 表示/非表示制御
+   - GameService連携
+2. ✅ TurnIndicatorView.cs 作成
+   - TextMeshPro + CanvasGroup
+   - 色分け表示（X: 青, O: 赤, AI: グレー）
    - VContainer Inject対応
-3. ✅ BoardViewModel.cs 作成
-   - 9つのCellViewModel管理
-   - GameService連携（OnMarkPlaced, CurrentTurn, CurrentGameResult）
-   - Human/AIターン判定（SyncBoardState修正済み）
-4. ✅ BoardView.cs 作成
-   - 9つのCellView管理
-   - CanvasGroup連携
-   - Auto Collect機能（Editor）
-5. ✅ テストファイル作成
-   - CellViewModelTests.cs（24テスト）
-   - BoardViewModelTests.cs（26テスト）
-6. ✅ 全テスト合格（200/200）
+3. ✅ ResultViewModel.cs 作成
+   - 結果テキスト管理（「Xの勝ち!」「Oの勝ち!」「引き分け」）
+   - リスタートイベント（OnRestartRequested）
+   - 表示/非表示制御
+4. ✅ ResultView.cs 作成
+   - TextMeshPro + Button + CanvasGroup
+   - パネル表示/非表示
+   - リスタートボタン
+5. ✅ GameMediator.cs 作成
+   - ゲーム開始/終了管理
+   - AIターン自動実行（非同期）
+   - 各ViewModel連携
+   - リスタート処理
+6. ✅ テストファイル作成
+   - TurnIndicatorViewModelTests.cs（26テスト）
+   - ResultViewModelTests.cs（25テスト）
+   - GameMediatorTests.cs（25テスト）
+7. ✅ 全テスト合格（276/276）
 
 ## Next Session Actions
-1. TurnIndicatorViewModel.cs / TurnIndicatorView.cs 作成
-2. ResultViewModel.cs / ResultView.cs 作成
-3. GameMediator.cs 作成（画面協調）
-4. Phase 6 (Game Flow UI) 実装開始
+1. VContainer DI設定（GameLifetimeScope.cs更新）
+2. Unity Scene統合
+   - Prefab作成（BoardPanel, TurnIndicator, ResultPanel）
+   - Canvas構築
+3. PlayModeテスト作成（オプション）
+4. 演出追加（アニメーション、効果音）
+5. 最終調整・ポリッシュ
 
 ## Context for Next Session
 - プロジェクトパス: `C:\Users\moono\Documents\Repository\UnityTest`
@@ -43,11 +52,12 @@
 - 設計ドキュメント: `.claude/skills/tictactoe/`
 - 実装進捗: `Serena Memory: current_status.md`
 
-## Architecture Notes (Phase 5)
-- CellViewModel: ReactiveProperty<CellState>, IsClickable, OnCellClicked
-- CellView: ViewBase<CellViewModel> + Button + TextMeshProUGUI
-- BoardViewModel: CellViewModel[9] + GameService連携 + Human/AI判定
-- BoardView: ViewBase<BoardViewModel> + CellView[9] + CanvasGroup
+## Architecture Notes (Phase 6)
+- TurnIndicatorViewModel: GameService.CurrentTurn購読, AI思考状態管理
+- TurnIndicatorView: ViewBase<TurnIndicatorViewModel> + TextMeshPro
+- ResultViewModel: GameService.CurrentGameResult購読, リスタートイベント
+- ResultView: ViewBase<ResultViewModel> + Button
+- GameMediator: ViewModelBase継承, 全ViewModel協調, AI自動実行
 
 ## Test Count
 - Phase 1: 57 tests (Domain)
@@ -55,15 +65,18 @@
 - Phase 3: 37 tests (AI)
 - Phase 4: 16 tests (ViewModelBase)
 - Phase 5: 50 tests (Cell + Board ViewModels)
-- Total: 200 tests (All passed)
+- Phase 6: 76 tests (TurnIndicator + Result + GameMediator)
+- Total: 276 tests (All passed)
 
-## Files Created (Phase 5)
-- Assets/TicTacToe/Scripts/Presentation/Cell/CellViewModel.cs
-- Assets/TicTacToe/Scripts/Presentation/Cell/CellView.cs
-- Assets/TicTacToe/Scripts/Presentation/Board/BoardViewModel.cs
-- Assets/TicTacToe/Scripts/Presentation/Board/BoardView.cs
-- Assets/TicTacToe/Tests/EditMode/CellViewModelTests.cs
-- Assets/TicTacToe/Tests/EditMode/BoardViewModelTests.cs
+## Files Created (Phase 6)
+- Assets/TicTacToe/Scripts/Presentation/TurnIndicator/TurnIndicatorViewModel.cs
+- Assets/TicTacToe/Scripts/Presentation/TurnIndicator/TurnIndicatorView.cs
+- Assets/TicTacToe/Scripts/Presentation/Result/ResultViewModel.cs
+- Assets/TicTacToe/Scripts/Presentation/Result/ResultView.cs
+- Assets/TicTacToe/Scripts/Presentation/Mediators/GameMediator.cs
+- Assets/TicTacToe/Tests/EditMode/TurnIndicatorViewModelTests.cs
+- Assets/TicTacToe/Tests/EditMode/ResultViewModelTests.cs
+- Assets/TicTacToe/Tests/EditMode/GameMediatorTests.cs
 
 ## Notes
 - 新規セッション開始時は `read_memory("session_handoff")` で状態復元

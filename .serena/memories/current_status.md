@@ -4,7 +4,7 @@
 2026-01-01
 
 ## Current Phase
-**Phase 7: DI & Scene Integration** - ✅ Completed
+**Phase 8: Polish & Release** - 🔄 In Progress (WebGL Deploy)
 
 ## Progress Summary
 - [x] Phase 0: 環境構築 ✅
@@ -15,11 +15,14 @@
 - [x] Phase 5: Board & Cell UI ✅ (50 tests)
 - [x] Phase 6: Game Flow UI ✅ (76 tests)
 - [x] Phase 7: DI & Scene Integration ✅
-  - [x] GameLifetimeScope.cs更新（VContainer DI登録）
-  - [x] GameEntryPoint.cs作成（IStartable実装）
-  - [x] SCENE_SETUP_GUIDE.md作成（Unity設定ガイド）
-  - [x] 全276テスト合格（1件フレーキー）
-- [ ] Phase 8: Polish & Release
+- [x] Phase 8: Polish & Release 🔄
+  - [x] Unity Scene セットアップ完了
+  - [x] ゲーム基本動作確認
+  - [x] カスタムUIシェーダー（角丸・ボーダー）
+  - [x] WebGL ビルド設定 & ビルド成功 (17MB)
+  - [x] gh-pages ブランチ作成 & デプロイ
+  - [ ] GitHub Pages 有効化（手動設定待ち）
+  - [ ] 動作テスト & README更新
 
 ## Next Actions
 1. Unity Sceneセットアップ（SCENE_SETUP_GUIDE.md参照）

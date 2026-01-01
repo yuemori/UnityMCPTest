@@ -140,7 +140,7 @@ namespace TicTacToe.Presentation.Mediators
             var turn = _gameService.CurrentTurn.CurrentValue;
             if (turn.CurrentPlayerType == PlayerType.AI)
             {
-                ExecuteAITurnAsync();
+                ExecuteAITurn();
             }
         }
 
@@ -164,7 +164,7 @@ namespace TicTacToe.Presentation.Mediators
             // AIのターンの場合、AIの手を実行
             if (turn.CurrentPlayerType == PlayerType.AI)
             {
-                ExecuteAITurnAsync();
+                ExecuteAITurn();
             }
         }
 
@@ -182,38 +182,37 @@ namespace TicTacToe.Presentation.Mediators
         }
 
         /// <summary>
-        /// ディレイ後にリザルトを表示
+        /// ディレイ後にリザルトを表示（WebGL対応版）
         /// </summary>
-        private async void ShowResultWithDelay(ResultType resultType)
+        private void ShowResultWithDelay(ResultType resultType)
         {
             if (IsDisposed) return;
 
-            try
+            if (ResultShowDelayMs > 0)
             {
-                // 盤面の結果を確認できるようにディレイ
-                if (ResultShowDelayMs > 0)
-                {
-                    await System.Threading.Tasks.Task.Delay(ResultShowDelayMs);
-                }
-
-                // Dispose後のチェック
-                if (IsDisposed) return;
-
-                // リザルトを表示
-                _resultViewModel.SetVisible(true);
+                // R3のObservable.Timerを使用（WebGL対応）
+                Observable.Timer(TimeSpan.FromMilliseconds(ResultShowDelayMs))
+                    .Subscribe(_ =>
+                    {
+                        if (!IsDisposed)
+                        {
+                            _resultViewModel.SetVisible(true);
+                        }
+                    })
+                    .AddTo(Disposables);
             }
-            catch (Exception)
+            else
             {
-                // Disposeされた場合の例外を無視
+                _resultViewModel.SetVisible(true);
             }
         }
 
         /// <summary>
-        /// AIターンを非同期で実行
+        /// AIターンを実行（WebGL対応版）
         /// </summary>
-        private async void ExecuteAITurnAsync()
+        private void ExecuteAITurn()
         {
-            ThrowIfDisposed();
+            if (IsDisposed) return;
 
             if (_gameService.IsGameOver)
             {
@@ -223,29 +222,28 @@ namespace TicTacToe.Presentation.Mediators
             // AI思考中の表示
             _turnIndicatorViewModel.SetAIThinking(true);
 
-            try
+            if (AIThinkingDelayMs > 0)
             {
-                // 思考ディレイ（UXのため）
-                if (AIThinkingDelayMs > 0)
-                {
-                    await System.Threading.Tasks.Task.Delay(AIThinkingDelayMs);
-                }
-
-                // Dispose後のチェック
-                if (IsDisposed || _gameService.IsGameOver)
-                {
-                    return;
-                }
-
-                // AIの手を実行
-                _aiService.ExecuteAIMove(_gameService);
+                // R3のObservable.Timerを使用（WebGL対応）
+                Observable.Timer(TimeSpan.FromMilliseconds(AIThinkingDelayMs))
+                    .Subscribe(_ =>
+                    {
+                        if (!IsDisposed && !_gameService.IsGameOver)
+                        {
+                            _aiService.ExecuteAIMove(_gameService);
+                        }
+                        
+                        if (!IsDisposed)
+                        {
+                            _turnIndicatorViewModel.SetAIThinking(false);
+                        }
+                    })
+                    .AddTo(Disposables);
             }
-            finally
+            else
             {
-                if (!IsDisposed)
-                {
-                    _turnIndicatorViewModel.SetAIThinking(false);
-                }
+                _aiService.ExecuteAIMove(_gameService);
+                _turnIndicatorViewModel.SetAIThinking(false);
             }
         }
 

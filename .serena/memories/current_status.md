@@ -12,7 +12,13 @@
 - [x] AI Skill作成（tictactoe/）
 - [x] Serena Memory初期化
 - [x] VContainer導入 (jp.hadashikick.vcontainer)
-- [x] R3導入 (com.cysharp.r3)
+- [x] R3導入 (com.cysharp.r3 + NuGet R3)
+- [x] NuGetForUnity導入
+- [x] R3 NuGet依存パッケージ導入
+  - R3 1.2.9
+  - System.Threading.Channels 8.0.0
+  - Microsoft.Bcl.TimeProvider 8.0.1
+  - Microsoft.Bcl.AsyncInterfaces 8.0.0
 - [x] ディレクトリ構造作成 (Assets/TicTacToe/)
 - [x] Assembly Definition Files作成
 - [x] TicTacToeScene.unity作成
@@ -34,3 +40,4 @@
 - View/ViewModel はコロケーション（機能単位で同一ディレクトリ）
 - UseCase層は省略（Service内に統合）
 - AI実装は IAIStrategy + RandomAIStrategy（拡張可能）
+- R3はNuGetForUnity経由でインストール（R3.UnityはUPM Git）

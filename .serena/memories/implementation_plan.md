@@ -25,7 +25,13 @@ Unity 6でのTic Tac Toe AI対戦ゲーム実装計画。
 **状態**: ✅ Completed (2026-01-01)
 **成果物**:
 - [x] VContainer パッケージ追加 (jp.hadashikick.vcontainer)
-- [x] R3 パッケージ追加 (com.cysharp.r3)
+- [x] R3 パッケージ追加
+  - [x] R3.Unity (UPM Git: com.cysharp.r3)
+  - [x] NuGetForUnity (UPM Git: com.github-glitchenzo.nugetforunity)
+  - [x] R3 1.2.9 (NuGet)
+  - [x] System.Threading.Channels 8.0.0 (NuGet)
+  - [x] Microsoft.Bcl.TimeProvider 8.0.1 (NuGet)
+  - [x] Microsoft.Bcl.AsyncInterfaces 8.0.0 (NuGet)
 - [x] ディレクトリ構造作成
   - [x] Assets/TicTacToe/Scenes/
   - [x] Assets/TicTacToe/Prefabs/UI/

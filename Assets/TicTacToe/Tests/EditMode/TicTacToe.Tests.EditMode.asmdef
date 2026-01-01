@@ -5,6 +5,7 @@
         "TicTacToe.Core",
         "TicTacToe.Presentation",
         "TicTacToe.Infrastructure",
+        "R3.Unity",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
@@ -15,7 +16,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "R3.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

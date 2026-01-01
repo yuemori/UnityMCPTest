@@ -4,30 +4,30 @@
 2026-01-01
 
 ## Session Summary
-- Phase 3 (AI Implementation) 実装完了
-- IAIStrategy + RandomAIStrategy + AIService + 単体テスト37件追加
-- 全テスト134件合格
+- Phase 4 (Presentation Base) 実装完了
+- ViewModelBase + ViewBase + GameLifetimeScope + 単体テスト16件追加
+- 全テスト150件合格
 
 ## Completed in This Session
-1. ✅ IAIStrategy.cs 作成
-   - AI戦略インターフェース
-   - DecideMove(board, aiMark) メソッド定義
-   - Name プロパティで戦略識別
-2. ✅ RandomAIStrategy.cs 作成
-   - 空きマスからランダムに1つ選択
-   - テスト用にシード付きRandom対応
-3. ✅ AIService.cs 作成
-   - 複数戦略の登録・選択機能
-   - ExecuteAIMove: GameServiceと連携してAI自動プレイ
-   - ターン判定でAIのみ実行
-4. ✅ AIStrategyTests.cs 作成（14テスト）
-5. ✅ AIServiceTests.cs 作成（23テスト）
-6. ✅ 全134テスト合格確認
+1. ✅ ViewModelBase.cs 作成
+   - R3 CompositeDisposable統合
+   - Initialize/Disposeライフサイクル管理
+   - ThrowIfDisposedパターン
+2. ✅ ViewBase.cs 作成
+   - 非ジェネリック版/ジェネリック版ViewBase
+   - VContainer [Inject]対応
+   - OnBindパターン for ViewModel binding
+3. ✅ GameLifetimeScope.cs 作成
+   - VContainer LifetimeScope設計
+   - Core層サービス登録（BoardRepository, GameService, AIService）
+   - Phase 5以降のVM/View登録テンプレート
+4. ✅ ViewModelBaseTests.cs 作成（16テスト）
+5. ✅ 全150テスト合格確認
 
 ## Next Session Actions
-1. ViewModel/View基底パターン確立
-2. VContainer LifetimeScope設計
-3. Phase 4 (Presentation Base) 実装開始
+1. CellViewModel.cs / CellView.cs 作成
+2. BoardViewModel.cs / BoardView.cs 作成
+3. Phase 5 (Board & Cell UI) 実装開始
 
 ## Context for Next Session
 - プロジェクトパス: `C:\Users\moono\Documents\Repository\UnityTest`
@@ -36,10 +36,10 @@
 - 実装進捗: `Serena Memory: current_status.md`
 
 ## Architecture Notes
-- IAIStrategy: Strategy Patternで異なるAI実装を差し替え可能
-- RandomAIStrategy: 基本AI（将来Minimax等を追加可能）
-- AIService: 戦略管理 + GameService連携のファサード
-- ExecuteAIMove: CurrentTurn.CurrentPlayerType == AI のときのみ実行
+- ViewModelBase: IDisposable + Initialize/Disposeライフサイクル
+- ViewBase<TViewModel>: MonoBehaviour + OnBind()パターン
+- GameLifetimeScope: VContainer DI container for all game services
+- Presentation層: MVVM with R3 reactive bindings
 
 ## Notes
 - Unity MCPが利用可能な場合、エディタ操作を自動化可能

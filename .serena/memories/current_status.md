@@ -4,47 +4,44 @@
 2026-01-01
 
 ## Current Phase
-**Phase 4: Presentation Base** - ✅ Completed
+**Phase 5: Board & Cell UI** - ✅ Completed
 
 ## Progress Summary
 - [x] Phase 0: 環境構築 ✅
-- [x] Phase 1: Core/Domain ✅
-  - [x] CellState.cs, PlayerType.cs, BoardPosition.cs, GameResult.cs, TurnInfo.cs
-  - [x] 単体テスト 57件 全合格
-- [x] Phase 2: Core/Repository & Service ✅
-  - [x] BoardRepository.cs, GameService.cs
-  - [x] 単体テスト 40件 全合格
-- [x] Phase 3: AI Implementation ✅
-  - [x] IAIStrategy.cs, RandomAIStrategy.cs, AIService.cs
-  - [x] 単体テスト 37件 全合格
-- [x] Phase 4: Presentation Base ✅
-  - [x] ViewModelBase.cs（R3 CompositeDisposable統合）
-  - [x] ViewBase.cs（MonoBehaviour + VContainer Inject）
-  - [x] GameLifetimeScope.cs（VContainer DI設計）
-  - [x] ViewModelBaseTests.cs（16テスト）
-  - [x] 単体テスト 150件 全合格
-- [ ] Phase 5: Board & Cell UI
+- [x] Phase 1: Core/Domain ✅ (57 tests)
+- [x] Phase 2: Core/Repository & Service ✅ (40 tests)
+- [x] Phase 3: AI Implementation ✅ (37 tests)
+- [x] Phase 4: Presentation Base ✅ (16 tests)
+- [x] Phase 5: Board & Cell UI ✅ (50 tests)
+  - [x] CellViewModel.cs（セル状態・クリックイベント管理）
+  - [x] CellView.cs（Button + TextMeshPro UI）
+  - [x] BoardViewModel.cs（9セル管理・GameService連携）
+  - [x] BoardView.cs（3x3グリッドUI）
+  - [x] CellViewModelTests.cs（24テスト）
+  - [x] BoardViewModelTests.cs（26テスト）
+  - [x] 全200テスト合格
+- [ ] Phase 6: Game Flow UI
 
 ## Next Actions
-1. CellViewModel.cs / CellView.cs 作成
-2. BoardViewModel.cs / BoardView.cs 作成
-3. CellButton.prefab / BoardPanel.prefab 作成
+1. TurnIndicatorViewModel.cs / TurnIndicatorView.cs 作成
+2. ResultViewModel.cs / ResultView.cs 作成
+3. GameMediator.cs - 画面協調
+4. Phase 6 (Game Flow UI) 実装開始
 
 ## Blockers
 なし
 
 ## Test Results
-- EditMode Tests: 150/150 passed
-- BoardPositionTests: 34 tests
-- GameResultTests: 11 tests
-- TurnInfoTests: 12 tests
-- BoardRepositoryTests: 17 tests
-- GameServiceTests: 23 tests
-- RandomAIStrategyTests: 14 tests
-- AIServiceTests: 23 tests
-- ViewModelBaseTests: 16 tests
+- EditMode Tests: 200/200 passed ✅
+- Phase 1: 57 tests (Domain models)
+- Phase 2: 40 tests (Repository + Service)
+- Phase 3: 37 tests (AI Strategy + Service)
+- Phase 4: 16 tests (ViewModelBase)
+- Phase 5: 50 tests (Cell + Board ViewModels)
 
 ## Recent Changes
-- ViewModelBase.cs: ViewModel基底クラス（R3 CompositeDisposable、Initialize/Disposeライフサイクル）
-- ViewBase.cs: View基底クラス（MonoBehaviour + VContainer Inject、OnBindパターン）
-- GameLifetimeScope.cs: VContainer LifetimeScope（Core/Presentation層DI設計）
+- CellViewModel.cs: セル状態・クリックイベント管理
+- CellView.cs: Button + TextMeshPro UI
+- BoardViewModel.cs: 9セル管理、GameService連携、Human/AI判定
+- BoardView.cs: 3x3グリッド、CellView管理
+- TicTacToe.Presentation.asmdef: Unity.TextMeshPro参照追加

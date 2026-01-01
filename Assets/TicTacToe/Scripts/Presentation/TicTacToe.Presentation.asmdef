@@ -4,7 +4,8 @@
     "references": [
         "TicTacToe.Core",
         "R3.Unity",
-        "VContainer"
+        "VContainer",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,0 +1,93 @@
+# Unity YAML files
+*.unity text merge=unityyamlmerge eol=lf
+*.prefab text merge=unityyamlmerge eol=lf
+*.asset text merge=unityyamlmerge eol=lf
+*.meta text merge=unityyamlmerge eol=lf
+*.mat text merge=unityyamlmerge eol=lf
+*.anim text merge=unityyamlmerge eol=lf
+*.controller text merge=unityyamlmerge eol=lf
+*.overrideController text merge=unityyamlmerge eol=lf
+*.physicMaterial text merge=unityyamlmerge eol=lf
+*.physicsMaterial2D text merge=unityyamlmerge eol=lf
+*.playable text merge=unityyamlmerge eol=lf
+*.mask text merge=unityyamlmerge eol=lf
+*.brush text merge=unityyamlmerge eol=lf
+*.flare text merge=unityyamlmerge eol=lf
+*.fontsettings text merge=unityyamlmerge eol=lf
+*.guiskin text merge=unityyamlmerge eol=lf
+*.giparams text merge=unityyamlmerge eol=lf
+*.renderTexture text merge=unityyamlmerge eol=lf
+*.spriteatlas text merge=unityyamlmerge eol=lf
+*.terrainlayer text merge=unityyamlmerge eol=lf
+*.mixer text merge=unityyamlmerge eol=lf
+*.shadervariants text merge=unityyamlmerge eol=lf
+*.signal text merge=unityyamlmerge eol=lf
+
+# Text files
+*.cs text diff=csharp eol=lf
+*.shader text eol=lf
+*.cginc text eol=lf
+*.hlsl text eol=lf
+*.compute text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.inputactions text eol=lf
+
+# Image files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.bmp binary
+*.tga binary
+*.tiff binary
+*.tif binary
+*.psd binary
+*.hdr binary
+*.exr binary
+
+# Audio files
+*.mp3 binary
+*.ogg binary
+*.wav binary
+*.aiff binary
+*.aif binary
+
+# Video files
+*.mp4 binary
+*.mov binary
+*.avi binary
+*.webm binary
+
+# 3D model files
+*.fbx binary
+*.obj binary
+*.dae binary
+*.3ds binary
+*.blend binary
+*.max binary
+*.mb binary
+*.ma binary
+
+# Font files
+*.ttf binary
+*.otf binary
+
+# Unity binary files
+*.cubemap binary
+*.unitypackage binary
+
+# Compressed files
+*.zip binary
+*.7z binary
+*.rar binary
+*.gz binary
+
+# DLLs
+*.dll binary
+*.pdb binary
+

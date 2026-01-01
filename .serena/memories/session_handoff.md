@@ -4,28 +4,30 @@
 2026-01-01
 
 ## Session Summary
-- Phase 2 (Core/Repository & Service) 実装完了
-- BoardRepository + GameService + 単体テスト40件追加
-- 全テスト97件合格
+- Phase 3 (AI Implementation) 実装完了
+- IAIStrategy + RandomAIStrategy + AIService + 単体テスト37件追加
+- 全テスト134件合格
 
 ## Completed in This Session
-1. ✅ BoardRepository.cs 作成
-   - 盤面データ管理（9マスの状態保持）
-   - R3 ReactiveProperty による状態通知
-   - TryPlaceMark, Reset, GetEmptyPositions 等
-2. ✅ GameService.cs 作成
-   - 勝敗判定ロジック（8通りのライン判定）
-   - ターン管理（TurnInfo使用）
-   - FindWinningMove（AI用勝利手検索）
-3. ✅ BoardRepositoryTests.cs 作成（17テスト）
-4. ✅ GameServiceTests.cs 作成（23テスト）
-5. ✅ 全97テスト合格確認
+1. ✅ IAIStrategy.cs 作成
+   - AI戦略インターフェース
+   - DecideMove(board, aiMark) メソッド定義
+   - Name プロパティで戦略識別
+2. ✅ RandomAIStrategy.cs 作成
+   - 空きマスからランダムに1つ選択
+   - テスト用にシード付きRandom対応
+3. ✅ AIService.cs 作成
+   - 複数戦略の登録・選択機能
+   - ExecuteAIMove: GameServiceと連携してAI自動プレイ
+   - ターン判定でAIのみ実行
+4. ✅ AIStrategyTests.cs 作成（14テスト）
+5. ✅ AIServiceTests.cs 作成（23テスト）
+6. ✅ 全134テスト合格確認
 
 ## Next Session Actions
-1. IAIStrategy.cs 作成（AI戦略インターフェース）
-2. RandomAIStrategy.cs 作成（ランダムAI実装）
-3. AIService.cs 作成（AI管理サービス）
-4. Phase 3 単体テスト作成
+1. ViewModel/View基底パターン確立
+2. VContainer LifetimeScope設計
+3. Phase 4 (Presentation Base) 実装開始
 
 ## Context for Next Session
 - プロジェクトパス: `C:\Users\moono\Documents\Repository\UnityTest`
@@ -34,10 +36,10 @@
 - 実装進捗: `Serena Memory: current_status.md`
 
 ## Architecture Notes
-- BoardRepository: データコンテナ層（R3 ReactiveProperty）
-- GameService: ファサード層（ゲームロジック統括）
-- 8通りの勝利パターン: Row0-2, Column0-2, DiagonalMain, DiagonalAnti
-- FindWinningMove: 2つ揃って1つ空きの位置を検索（AI Phase 3で使用）
+- IAIStrategy: Strategy Patternで異なるAI実装を差し替え可能
+- RandomAIStrategy: 基本AI（将来Minimax等を追加可能）
+- AIService: 戦略管理 + GameService連携のファサード
+- ExecuteAIMove: CurrentTurn.CurrentPlayerType == AI のときのみ実行
 
 ## Notes
 - Unity MCPが利用可能な場合、エディタ操作を自動化可能

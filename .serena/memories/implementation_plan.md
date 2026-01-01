@@ -9,7 +9,7 @@ Unity 6でのTic Tac Toe AI対戦ゲーム実装計画。
 |-------|------|------|------|
 | Phase 0 | 環境構築 | ✅ Completed | - |
 | Phase 1 | Core/Domain | ✅ Completed | Phase 0 |
-| Phase 2 | Core/Repository & Service | ⏳ Pending | Phase 1 |
+| Phase 2 | Core/Repository & Service | ✅ Completed | Phase 1 |
 | Phase 3 | AI Implementation | ⏳ Pending | Phase 2 |
 | Phase 4 | Presentation Base | ⏳ Pending | Phase 2 |
 | Phase 5 | Board & Cell UI | ⏳ Pending | Phase 4 |

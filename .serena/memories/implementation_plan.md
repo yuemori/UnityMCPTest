@@ -7,7 +7,7 @@ Unity 6でのTic Tac Toe AI対戦ゲーム実装計画。
 
 | Phase | 内容 | 状態 | 依存 |
 |-------|------|------|------|
-| Phase 0 | 環境構築 | ⏳ Pending | - |
+| Phase 0 | 環境構築 | ✅ Completed | - |
 | Phase 1 | Core/Domain | ⏳ Pending | Phase 0 |
 | Phase 2 | Core/Repository & Service | ⏳ Pending | Phase 1 |
 | Phase 3 | AI Implementation | ⏳ Pending | Phase 2 |
@@ -22,26 +22,27 @@ Unity 6でのTic Tac Toe AI対戦ゲーム実装計画。
 
 ### Phase 0: Environment Setup
 **目標**: 開発環境の準備
+**状態**: ✅ Completed (2026-01-01)
 **成果物**:
-- [ ] VContainer パッケージ追加
-- [ ] UniRX パッケージ追加
-- [ ] ディレクトリ構造作成
-  - [ ] Assets/TicTacToe/Scenes/
-  - [ ] Assets/TicTacToe/Prefabs/UI/
-  - [ ] Assets/TicTacToe/Scripts/Core/Domain/
-  - [ ] Assets/TicTacToe/Scripts/Core/Repositories/
-  - [ ] Assets/TicTacToe/Scripts/Core/Services/
-  - [ ] Assets/TicTacToe/Scripts/Core/Strategies/
-  - [ ] Assets/TicTacToe/Scripts/Presentation/
-  - [ ] Assets/TicTacToe/Scripts/Infrastructure/
-  - [ ] Assets/TicTacToe/Tests/
-- [ ] Assembly Definition Files作成
-  - [ ] TicTacToe.Core.asmdef
-  - [ ] TicTacToe.Presentation.asmdef
-  - [ ] TicTacToe.Infrastructure.asmdef
-  - [ ] TicTacToe.Tests.EditMode.asmdef
-  - [ ] TicTacToe.Tests.PlayMode.asmdef
-- [ ] TicTacToeScene.unity 作成
+- [x] VContainer パッケージ追加 (jp.hadashikick.vcontainer)
+- [x] R3 パッケージ追加 (com.cysharp.r3)
+- [x] ディレクトリ構造作成
+  - [x] Assets/TicTacToe/Scenes/
+  - [x] Assets/TicTacToe/Prefabs/UI/
+  - [x] Assets/TicTacToe/Scripts/Core/Domain/
+  - [x] Assets/TicTacToe/Scripts/Core/Repositories/
+  - [x] Assets/TicTacToe/Scripts/Core/Services/
+  - [x] Assets/TicTacToe/Scripts/Core/Strategies/
+  - [x] Assets/TicTacToe/Scripts/Presentation/
+  - [x] Assets/TicTacToe/Scripts/Infrastructure/
+  - [x] Assets/TicTacToe/Tests/
+- [x] Assembly Definition Files作成
+  - [x] TicTacToe.Core.asmdef
+  - [x] TicTacToe.Presentation.asmdef
+  - [x] TicTacToe.Infrastructure.asmdef
+  - [x] TicTacToe.Tests.EditMode.asmdef
+  - [x] TicTacToe.Tests.PlayMode.asmdef
+- [x] TicTacToeScene.unity 作成
 
 ### Phase 1: Core/Domain
 **目標**: ドメインモデルの定義

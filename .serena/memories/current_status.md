@@ -4,22 +4,27 @@
 2026-01-01
 
 ## Current Phase
-**Phase 0: Environment Setup** - ⏳ Not Started
+**Phase 0: Environment Setup** - ✅ Completed
 
 ## Progress Summary
 - [x] 設計方針決定（MVVM + Clean Architecture）
 - [x] ディレクトリ構造設計
 - [x] AI Skill作成（tictactoe/）
 - [x] Serena Memory初期化
-- [ ] VContainer/UniRX導入
-- [ ] 実装開始
+- [x] VContainer導入 (jp.hadashikick.vcontainer)
+- [x] R3導入 (com.cysharp.r3)
+- [x] ディレクトリ構造作成 (Assets/TicTacToe/)
+- [x] Assembly Definition Files作成
+- [x] TicTacToeScene.unity作成
+- [ ] Phase 1 Core/Domain 実装開始
 
 ## Next Actions
-1. VContainerパッケージをUnityに追加
-2. UniRXパッケージをUnityに追加
-3. Assets/TicTacToe/ ディレクトリ構造作成
-4. Assembly Definition Files作成
-5. Phase 0完了後、Phase 1へ移行
+1. CellState.cs 作成（Core/Domain）
+2. PlayerType.cs 作成（Core/Domain）
+3. BoardPosition.cs 作成（Core/Domain）
+4. GameResult.cs 作成（Core/Domain）
+5. TurnInfo.cs 作成（Core/Domain）
+6. 単体テスト作成
 
 ## Blockers
 なし

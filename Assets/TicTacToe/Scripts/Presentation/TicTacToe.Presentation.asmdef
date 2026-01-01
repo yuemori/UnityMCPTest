@@ -1,0 +1,18 @@
+{
+    "name": "TicTacToe.Presentation",
+    "rootNamespace": "TicTacToe.Presentation",
+    "references": [
+        "TicTacToe.Core",
+        "R3.Unity",
+        "VContainer"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
